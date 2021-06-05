@@ -18,7 +18,7 @@ function load() {
     if (localStorage.getItem("yhvr-balancething-boost")) bigBoost = JSON.parse(localStorage.getItem("yhvr-balancething-boost"))
 }
 
-function noSaveLOL(isEnd = false, resetBoost = true) {
+function noSaveLOL(isEnd = false, resetBoost = true, nerfBoost = false) {
     if (!confirm("Are ya sure?")) return;
     for (const key in defaultGame) {
         game[key] = defaultGame[key];
@@ -26,6 +26,7 @@ function noSaveLOL(isEnd = false, resetBoost = true) {
     }
 
     if (resetBoost) bigBoost = 1;
+    else if (nerfBoost) bigBoost /= 2;
     else if (isEnd) bigBoost *= 2;
     app.$forceUpdate();
     save();
