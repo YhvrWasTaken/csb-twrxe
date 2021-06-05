@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>twice.</title>
+
+		<script src="https://unpkg.com/vue"></script>
+		<script src="b-e.js"></script>
+		<script src="format.js"></script>
+
+		<script src="make-number-faster.js"></script>
+		<script src="prestige.js"></script>
+		<script src="grey.js"></script>
+		<script src="save.js"></script>
+		<script src="main.js" defer></script>
+
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<div id="app">
+			<div id="left">
+				<div class="upgrades">
+					<img
+						v-for="(upgrade, id) in UPGRADES"
+						v-if="!game.upgrades[id + '-light'] && upgrade.shown({ curr: game.light, currN: 'light' }) && !upgrade.darknessOnly"
+						:src="'images/light' + upgrade.img"
+						:width="50"
+						@click="buyUpg(id, false)"
+						@mouseover="showTooltip(id)"
+						@mouseout="hideTooltip()">
+				</div>
+				<div id="center-container">
+					<div class="center-txt">You have {{ format(game.light) }} light.</div>
+					<br />
+					<button @click="moreCurr('light')">More</button>
+					<div class="center-txt" v-if="game.yin.gt(0) || game.yang.gt(0)">
+						<br>
+						You have {{ format(game.yin) }} yin, multiplying light and darkness gain by x{{ format(getYinBoost()) }}<br>
+						<div v-if="yinAdvancements[game.yinAdvancements].neq(Infinity)">Next yin advancement at {{ format(yinAdvancements[game.yinAdvancements]) }} yin.</div>
+						<div v-if="game.yinAdvancements >= 1 && !game.hideYinEffects"><br>Currently autobuying all upgrades</div>
+						<div v-if="game.yinAdvancements >= 2 && !game.hideYinEffects">and clicks affect both sides</div>
+						<div v-if="game.yinAdvancements >= 3 && !game.hideYinEffects">and unlocking MORE UPGRADES</div>
+						<div v-if="game.yinAdvancements >= 4 && !game.hideYinEffects">and keeping upgrades on reset</div>
+					</div>
+				</div>
+			</div>
+			<div id="right">
+				<div class="upgrades">
+					<img
+						v-for="(upgrade, id) in UPGRADES"
+						v-if="!game.upgrades[id + '-darkness'] && upgrade.shown({ curr: game.darkness, currN: 'darkness' }) && !upgrade.lightOnly"
+						:src="'images/dark' + upgrade.img"
+						width="50"
+						@click="buyUpg(id, true)"
+						@mouseover="showTooltip(id, true)"
+						@mouseout="hideTooltip()">
+				</div>
+				<div id="center-container">
+					<div class="center-txt">You have {{ format(game.darkness) }} darkness.</div>
+					<br />
+					<button @click="moreCurr('darkness')">More</button>
+					<div class="center-txt" v-if="game.yin.gt(0) || game.yang.gt(0)"><br>
+						You have {{ format(game.yang) }} yang.
+						<div v-if="game.yang.gt(0)">
+							<progress max="4" :value="game.yangPos"></progress><br>
+							<button @click="shiftYang(true)"><-</button> <button @click="shiftYang()">-></button><br>
+							{{ format(game.white) }} white, for a {{ format(getSideMult("white")) }}x multiplier to light gain ({{ format(getSideProd(true)) }}/s),<br>
+							{{ format(game.black) }} black, for a {{ format(getSideMult("black")) }}x multiplier to darkness gain ({{ format(getSideProd()) }}/s)
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div v-if="game.upgrades['16-darkness']" id="top">
+				<button @click="goGrey()">go grey.</button>
+			</div>
+
+			<div id="bottom">
+				by yhvr | tested by unpogged and epicness
+			</div>
+
+			<img id="optionsimg" src="images/options.png" alt="Options" @click="optionsOpen = !optionsOpen">
+			<img id="bupsimg" src="images/upgrades.png" alt="Upgrades" @click="bUpsOpen = !bUpsOpen">>
+
+			<div class="boughtUpgs" id="boughtUpgsLeft" v-if="bUpsOpen">
+				<img
+					v-for="(_, id) in game.upgrades"
+					v-if="id.endsWith('t')"
+					:src="'images/' + id.split('-').reverse().join('') + '.png'"
+					width="50"
+					@mouseover="showTooltip(id.split('-')[0], id.endsWith('s'), true)"
+					@mouseout="hideTooltip()"
+				>
+			</div>
+
+			<div class="boughtUpgs" id="boughtUpgsRight" v-if="bUpsOpen">
+				<img
+					v-for="(_, id) in game.upgrades"
+					v-if="id.endsWith('s')"
+					:src="'images/' + id.split('-').reverse().join('').replace('ness', '') + '.png'"
+					width="50"
+					@mouseover="showTooltip(id.split('-')[0], true)"
+					@mouseout="hideTooltip()"
+				>
+			</div>
+
+			<div class="boughtUpgs" id="options" v-if="optionsOpen">
+				<button @click="save()">save</button><br>
+				<button @click="noSaveLOL()">hard reset</button><br>
+				<button @click="exportGame()">export</button><br>
+				<button @click="importGame()">import</button><br>
+				<button v-if="game.yin.gt(0)" @click="game.hideYinEffects = !game.hideYinEffects">show/hide yin effects</button>
+			</div>
+
+
+			<div
+				id="tooltip"
+				v-if="tooltipShown !== false"
+				:style="{ left: tooltipCoords[0] + 'px', top: tooltipCoords[1] + 'px', position: 'absolute' }"
+				v-html="tooltipShown"
+			></div>
+		</div>
+	</body>
+</html>

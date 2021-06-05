@@ -1,0 +1,208 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap");
+
+html, body {
+	overflow: hidden;
+}
+
+body,
+button {
+	margin: 0;
+	font-family: "Roboto Mono", monospace !important;
+	font-size: 15px !important;
+	/* tODO make top text color based off of currency with most */
+	--more: white;
+}
+
+progress[value] {
+	appearance: none;
+	width: 250px;
+	height: 20px;
+	border-radius: 25px;
+	border: solid medium white;
+}
+
+progress[value]::-webkit-progress-bar {
+	color: white;
+	background-color: black;
+	border-radius: 5px;
+}
+
+progress[value]::-webkit-progress-value {
+	background-color: white;
+	border-radius: 5px;
+}
+
+img {
+	image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    -ms-interpolation-mode: nearest-neighbor;
+    image-rendering: pixelated;
+}
+
+.upgrades img {
+	padding: 0;
+	border: 0;
+	display: block;
+}
+
+.boughtUpgs {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 200px;
+	height: 50vh;
+	padding: 25px;
+	background-color: grey;
+}
+
+#boughtUpgsLeft {
+	transform: translate(-100%, -50%);
+	background-color: black;
+}
+
+#boughtUpgsRight {
+	transform: translate(0, -50%);
+	background-color: white;
+}
+
+#options {
+	width: 150px;
+	height: 150px;
+	transform: translate(-50%, -50%);
+}
+
+#right .upgrades {
+	margin-left: calc(50vw - 50px);
+}
+
+#top {
+	position: absolute;
+	left: 50vw;
+	top: 0;
+	height: 50px;
+	width: 75vw;
+	background-color: grey;
+	transform: translate(-50%, 0);
+	line-height: 50px;
+	color: var(--more);
+	text-align: center;
+}
+
+#bottom {
+	position: absolute;
+	left: 50vw;
+	bottom: 0;
+	height: 50px;
+	width: 75vw;
+	background-color: grey;
+	transform: translate(-50%, 0);
+	line-height: 50px;
+	text-align: center;
+}
+
+#left {
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100vh;
+	width: 50vw;
+	background-color: white;
+	color: black;
+}
+
+#left button {
+	border-radius: 5px;
+	border: solid thin black;
+	background-color: white;
+	color: black;
+	transition: 1s all;
+}
+
+#left button:hover {
+	color: white;
+	background-color: black;
+}
+
+#right {
+	position: absolute;
+	left: 50vw;
+	top: 0;
+	height: 100vh;
+	width: 50vw;
+	background-color: black;
+	color: white;
+}
+
+#right button {
+	border-radius: 5px;
+	border: solid thin white;
+	background-color: black;
+	color: white;
+	transition: 1s all;
+}
+
+#right button:hover {
+	color: black;
+	background-color: white;
+}
+
+.center-txt {
+	text-align: center;
+}
+
+#optionsimg {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 50px;
+}
+
+#bupsimg {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 50px;
+}
+
+#goGrey {
+	animation: fadein 3s
+}
+
+#goGreyContainer {
+	transform: translate(-50%, -50%);
+	background-color: #00000000;
+	width: 50vw;
+	height: auto;
+}
+
+@keyframes fadein {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+#center-container {
+	position: absolute;
+	width: 50vw;
+	top: 50%;
+	transform: translate(0, -50%);
+}
+
+#center-container > button {
+	margin-left: 50%;
+	transform: translate(-50%, 0);
+}
+
+#tooltip {
+	z-index: 5;
+	pointer-events: none;
+	background-color: white;
+	padding: 5px;
+	border: solid thin black;
+	width: 340px;
+}
